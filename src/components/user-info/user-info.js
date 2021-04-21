@@ -1,7 +1,7 @@
 import React from 'react';
 
-const UserInfo = ({ isSignedIn, username, submittedEntries }) => {
-  if (isSignedIn) {
+const UserInfo = ({ isLoggedIn, username, submittedEntries }) => {
+  if (isLoggedIn) {
     return (
       <div>
         <div className='f3'>

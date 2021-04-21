@@ -15,7 +15,7 @@ const initialState = {
   identifiedImage: '',
   celebrityImage: '',
   route: 'home',
-  isSignedIn: false,
+  isLoggedIn: false,
   user: {
     id: '',
     email: '',
@@ -88,14 +88,18 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
-  onRouteChange = (route) => {
-    if (route === 'signout') {
-      this.setState(initialState)
-    } else if (route === 'home') {
-      this.setState({isSignedIn: true})
-    }
+  changeRoute = (route) => {
+    this.setState({ route: route });
+  }
 
-    this.setState({route: route});
+  login = () => {
+    this.setState({ isLoggedIn: true });
+    this.changeRoute('home');
+  }
+
+  logout = () => {
+    this.setState({ isLoggedIn: false });
+    this.changeRoute('login');
   }
 
   loadUser = (data) => {
@@ -111,15 +115,15 @@ class App extends Component {
   }
 
   render() {
-    const { isSignedIn, imageURL, route, identifiedImage, celebrityImage } = this.state;
+    const { isLoggedIn, imageURL, route, identifiedImage, celebrityImage } = this.state;
     return (
       <div className="App">
-        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+        <Navigation isLoggedIn={isLoggedIn} changeRoute={this.changeRoute} logout={this.logout}/>
         { route === 'home'
           ? 
             <div>
               <UserInfo 
-                isSignedIn={isSignedIn}
+                isLoggedIn={isLoggedIn}
                 username={this.state.user.username}
                 submittedEntries={this.state.user.submittedEntries}
               />
@@ -131,8 +135,8 @@ class App extends Component {
             </div>
           : (
               route === 'login'
-              ? <Login loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+              ? <Login loadUser={this.loadUser} changeRoute={this.changeRoute} login={this.login}/>
+              : <Register loadUser={this.loadUser} changeRoute={this.changeRoute} login={this.login}/>
             )
 
         }

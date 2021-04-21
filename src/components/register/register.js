@@ -39,7 +39,7 @@ class Register extends React.Component {
       // Check if registration is validated and ID has been created.
       if (user.id) {
         this.props.loadUser(user);
-        this.props.onRouteChange('home');
+        this.props.login();
       }
     })
   }
@@ -74,7 +74,7 @@ class Register extends React.Component {
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="username">Username</label>
                 <input 
-                  className="b pa2 input-reset ba bg-transparent hover-black w-100" 
+                  className="b pa2 input-reset ba bg-transparent w-100" 
                   type="text" 
                   name="username" 
                   id="username" 
