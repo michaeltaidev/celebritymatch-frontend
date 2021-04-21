@@ -4,16 +4,16 @@ import './image-link-form.css'
 const ImageLinkForm = ({ onInputChange, onButtonSubmit }) => {
   return (
     <div>
-      <p className='f3'>
-        {'Paste a link to an image:'}
+      <p className='f4'>
+        {'Paste the URL for of photo:'}
       </p>
       <div className='center'>
-        <div className='form center pa4 br3 shadow-5'>
-          <input className='f4 pa2 w-70 center' type='text' onChange={onInputChange}/>
+        <div className='form center br3 mb3'>
+          <input className='pa2 input-reset ba bg-transparent w-100 shadow-5' type='text' onChange={onInputChange}/>
           <button 
-            className='w-30 grow f4 link ph3 pv2 dib white bg-gray'
+            className='b ml3 ph4 pv2 input-reset ba bg-transparent grow pointer f6 dib shadow-5'
             onClick={onButtonSubmit}
-          >Identify</button>
+          >Submit</button>
         </div>
       </div>
     </div>

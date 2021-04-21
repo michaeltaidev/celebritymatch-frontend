@@ -1,13 +1,18 @@
 import React from 'react';
 
-const UserInfo = ({ username, submittedEntries }) => {
-  return (
-    <div>
-      <div className='f3'>
-        {`Welcome ${username}, you've identified ${submittedEntries} images.`}
+const UserInfo = ({ isSignedIn, username, submittedEntries }) => {
+  if (isSignedIn) {
+    return (
+      <div>
+        <div className='f3'>
+          <h3>
+            {`Welcome ${username}, you've submitted ${submittedEntries} images.`}
+          </h3>
+        </div>
       </div>
-    </div>
-  );
+    )
+  }
+  return('');
 }
 
 export default UserInfo;

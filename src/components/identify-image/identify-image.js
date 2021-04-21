@@ -1,12 +1,13 @@
 import React from 'react';
 
-const IdentifyImage = ({ identifiedImage, imageURL }) => {
+const IdentifyImage = ({ identifiedImage, celebrityImage, imageURL }) => {
   return (
-    <div className='center ma'>
-      <div className='absolute mt2'>
-        <img id='input-image' src={imageURL} alt='' width='500px' height='auto' />
-        <h2 className='center'>{identifiedImage}</h2>
+    <div>
+      <div className='flex items-center justify-center w-100 mt2'>
+        <img style={{ maxHeight: '500px' }} id='input-image' className='shadow-5 ma3' src={imageURL} alt='' width='auto' />
+        <img style={{ maxHeight: '500px' }} id='input-image' className='shadow-5 ma3' src={celebrityImage} alt='' width='auto'/>
       </div>
+      <h1 className='relative ttc center'>{identifiedImage}</h1>
     </div>
   );
 }

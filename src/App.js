@@ -4,7 +4,6 @@ import IdentifyImage from './components/identify-image/identify-image';
 import Navigation from './components/navigation/navigation';
 import Login from './components/login/login';
 import Register from './components/register/register';
-import Logo from './components/logo/logo';
 import ImageLinkForm from './components/image-link-form/image-link-form';
 import UserInfo from './components/user-info/user-info';
 
@@ -14,7 +13,8 @@ const initialState = {
   input: '',
   imageURL: '',
   identifiedImage: '',
-  route: 'login',
+  celebrityImage: '',
+  route: 'home',
   isSignedIn: false,
   user: {
     id: '',
@@ -30,11 +30,23 @@ class App extends Component {
     super();
     this.state = initialState;
   }
-
+  
   identifyImage = (data) => {
     try {
       const matchedCelebrityName = data.outputs[0].data.regions[0].data.concepts[0].name;
       this.setState({ identifiedImage: matchedCelebrityName });
+
+      // Get an image of the matched celebrity
+      fetch(CELEBRITYMATCH_API_LINK + 'imagematch', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input: matchedCelebrityName })
+      })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response.data.items[0].link);
+        this.setState({ celebrityImage: response.data.items[0].link })
+      })
     }
     catch {
       this.setState({ identifiedImage: 'No match found. Try a different photo!' })
@@ -46,6 +58,10 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
+    // Clear current submission
+    this.setState({ celebrityImage: '', identifiedImage: '', imageURL: '' });
+
+    // Use Clarifai API to find matched celebrity
     this.setState({imageURL: this.state.input});
     fetch(CELEBRITYMATCH_API_LINK + 'imageurl', {
       method: 'post',
@@ -53,6 +69,7 @@ class App extends Component {
       body: JSON.stringify({ input: this.state.input })
     })
     .then(response => response.json())
+    // Increment submitted entries if a match is found
     .then(response => {
       if (response) {
         fetch(CELEBRITYMATCH_API_LINK + 'image', {
@@ -94,22 +111,23 @@ class App extends Component {
   }
 
   render() {
-    const { isSignedIn, imageURL, route, identifiedImage } = this.state;
+    const { isSignedIn, imageURL, route, identifiedImage, celebrityImage } = this.state;
     return (
       <div className="App">
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         { route === 'home'
-          ? <div>
+          ? 
+            <div>
               <UserInfo 
-                username={this.state.user.username} 
+                isSignedIn={isSignedIn}
+                username={this.state.user.username}
                 submittedEntries={this.state.user.submittedEntries}
               />
-              <Logo />
               <ImageLinkForm
                 onInputChange={this.onInputChange}
                 onButtonSubmit={this.onButtonSubmit}
               />
-              <IdentifyImage identifiedImage={identifiedImage} imageURL={imageURL} />
+            <IdentifyImage identifiedImage={identifiedImage} celebrityImage={celebrityImage} imageURL={imageURL} />
             </div>
           : (
               route === 'login'

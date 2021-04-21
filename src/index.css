@@ -1,11 +1,16 @@
 body {
   margin: 0;
+
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: rgb(233, 233, 222);
+
+  background: #e52d27;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #b31217, #e52d27);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #b31217, #e52d27); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 code {
@@ -15,4 +20,37 @@ code {
 
 button {
   cursor: pointer;
+}
+
+p {
+  color: rgb(233, 233, 233);
+}
+
+main {
+  color: rgb(233, 233, 233);
+}
+
+h1 {
+  color: rgb(233, 233, 233);
+}
+
+h2 {
+  color: rgb(233, 233, 233);
+}
+
+h3 {
+  color: rgb(233, 233, 233);
+}
+
+input {
+  color: rgb(233, 233, 233);
+  border-color: rgb(212, 212, 212);
+}
+
+input:focus {
+  outline-style: none;
+}
+
+nav {
+  padding: 0 2em;
 }
