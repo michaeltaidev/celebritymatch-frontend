@@ -30,62 +30,70 @@ class App extends Component {
     super();
     this.state = initialState;
   }
-  
-  identifyImage = (data) => {
-    try {
-      const matchedCelebrityName = data.outputs[0].data.regions[0].data.concepts[0].name;
-      this.setState({ identifiedImage: matchedCelebrityName });
-
-      // Get an image of the matched celebrity
-      fetch(CELEBRITYMATCH_API_LINK + 'imagematch', {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input: matchedCelebrityName })
-      })
-      .then(response => response.json())
-      .then(response => {
-        console.log(response.data.items[0].link);
-        this.setState({ celebrityImage: response.data.items[0].link })
-      })
-    }
-    catch {
-      this.setState({ identifiedImage: 'No match found. Try a different photo!' })
-    }
-  }
-
-  onInputChange = (event) => {
-    this.setState({input: event.target.value});
-  }
 
   onButtonSubmit = () => {
-    // Clear current submission
-    this.setState({ celebrityImage: '', identifiedImage: '', imageURL: '' });
+    this.clearCurrentResults()
+    this.fetchClarifaiAPIResults()
+  }
 
-    // Use Clarifai API to find matched celebrity
-    this.setState({imageURL: this.state.input});
+  clearCurrentResults() {
+    this.setState({ celebrityImage: '', identifiedImage: '', imageURL: '' });
+  }
+
+  fetchClarifaiAPIResults = () => {
+    this.setState({ imageURL: this.state.input });
     fetch(CELEBRITYMATCH_API_LINK + 'imageurl', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ input: this.state.input })
     })
-    .then(response => response.json())
-    // Increment submitted entries if a match is found
-    .then(response => {
-      if (response) {
-        fetch(CELEBRITYMATCH_API_LINK + 'image', {
-          method: 'put',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: this.state.user.id })
-        })
-        .then(response => response.json())
-        .then(count => {
-          this.setState(Object.assign(this.state.user, { submittedEntries: count }))
-        })
-        .catch(console.log)
-      }
-      this.identifyImage(response)
+      .then(response => response.json())
+      .then(response => {
+        if (response) {
+          this.incrementSubmittedEntries();
+        }
+        this.displayClarifaiAPIResults(response)
+      })
+      .catch(err => console.log(err));
+  }
+
+  incrementSubmittedEntries = () => {
+    fetch(CELEBRITYMATCH_API_LINK + 'image', {
+      method: 'put',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: this.state.user.id })
     })
-    .catch(err => console.log(err));
+      .then(response => response.json())
+      .then(count => {
+        this.setState(Object.assign(this.state.user, { submittedEntries: count }))
+      })
+      .catch(console.log)
+  }
+
+  displayClarifaiAPIResults = (data) => {
+    try {
+      const matchedCelebrityName = data.outputs[0].data.regions[0].data.concepts[0].name;
+      this.setState({ identifiedImage: matchedCelebrityName });
+      this.getImageFromGoogleSearchAPI(matchedCelebrityName);
+    } catch {
+      this.setState({ identifiedImage: 'No match found!' })
+    }
+  }
+
+  getImageFromGoogleSearchAPI = (searchTerm) => {
+    fetch(CELEBRITYMATCH_API_LINK + 'imagematch', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ input: searchTerm })
+    })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ celebrityImage: response.data.items[0].link })
+      })
+  }
+
+  onURLInputChange = (event) => {
+    this.setState({input: event.target.value});
   }
 
   changeRoute = (route) => {
@@ -118,7 +126,11 @@ class App extends Component {
     const { isLoggedIn, imageURL, route, identifiedImage, celebrityImage } = this.state;
     return (
       <div className="App">
-        <Navigation isLoggedIn={isLoggedIn} changeRoute={this.changeRoute} logout={this.logout}/>
+        <Navigation 
+          isLoggedIn={isLoggedIn} 
+          changeRoute={this.changeRoute} 
+          logout={this.logout}
+        />
         { route === 'home'
           ? 
             <div>
@@ -128,17 +140,28 @@ class App extends Component {
                 submittedEntries={this.state.user.submittedEntries}
               />
               <ImageLinkForm
-                onInputChange={this.onInputChange}
+                onURLInputChange={this.onURLInputChange}
                 onButtonSubmit={this.onButtonSubmit}
               />
-            <IdentifyImage identifiedImage={identifiedImage} celebrityImage={celebrityImage} imageURL={imageURL} />
+            <IdentifyImage 
+              identifiedImage={identifiedImage} 
+              celebrityImage={celebrityImage} 
+              imageURL={imageURL} 
+            />
             </div>
           : (
               route === 'login'
-              ? <Login loadUser={this.loadUser} changeRoute={this.changeRoute} login={this.login}/>
-              : <Register loadUser={this.loadUser} changeRoute={this.changeRoute} login={this.login}/>
+              ? <Login 
+                  loadUser={this.loadUser} 
+                  changeRoute={this.changeRoute} 
+                  login={this.login}
+                />
+              : <Register 
+                  loadUser={this.loadUser} 
+                  changeRoute={this.changeRoute} 
+                  login={this.login}
+                />
             )
-
         }
       </div>
     );
