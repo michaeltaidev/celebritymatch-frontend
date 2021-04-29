@@ -6,7 +6,7 @@ const UserInfo = ({ isLoggedIn, username, submittedEntries }) => {
       <div className='mt1'>
         <div className='f5'>
           <h2>
-            {`Welcome ${username}, you've submitted ${submittedEntries} images.`}
+            {`Welcome ${username}, you've submitted ${submittedEntries} image(s).`}
           </h2>
         </div>
       </div>
