@@ -1,6 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
-import IdentifyImage from './components/identify-image/identify-image';
+import ImageDisplay from './components/image-display/image-display';
 import Navigation from './components/navigation/navigation';
 import Login from './components/login/login';
 import Register from './components/register/register';
@@ -11,11 +11,13 @@ export const CELEBRITYMATCH_API_LINK = 'https://celebritymatch.herokuapp.com/';
 
 const initialState = {
   input: '',
-  imageURL: '',
-  identifiedImage: '',
-  celebrityImage: '',
+  submittedImageURL: '',
+  matchedCelebrityName: '',
+  celebrityImageURL: '',
   route: 'home',
   isLoggedIn: false,
+  isFindingMatch: false,
+  hasMatchResults: false,
   user: {
     id: '',
     email: '',
@@ -32,17 +34,18 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
+    this.setState({ hasMatchResults: false, isFindingMatch: true })
     this.clearCurrentResults()
     this.fetchClarifaiAPIResults()
   }
 
   clearCurrentResults() {
-    this.setState({ celebrityImage: '', identifiedImage: '', imageURL: '' });
+    this.setState({ celebrityImageURL: '', matchedCelebrityName: '', submittedImageURL: '' });
   }
 
   fetchClarifaiAPIResults = () => {
-    this.setState({ imageURL: this.state.input });
-    fetch(CELEBRITYMATCH_API_LINK + 'imageurl', {
+    this.setState({ submittedImageURL: this.state.input });
+    fetch(CELEBRITYMATCH_API_LINK + 'ImageURL', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ input: this.state.input })
@@ -73,10 +76,10 @@ class App extends Component {
   displayClarifaiAPIResults = (data) => {
     try {
       const matchedCelebrityName = data.outputs[0].data.regions[0].data.concepts[0].name;
-      this.setState({ identifiedImage: matchedCelebrityName });
+      this.setState({ matchedCelebrityName: matchedCelebrityName });
       this.getImageFromGoogleSearchAPI(matchedCelebrityName);
     } catch {
-      this.setState({ identifiedImage: 'No match found!' })
+      this.setState({ matchedCelebrityName: 'No match found. Try a different image!' })
     }
   }
 
@@ -88,7 +91,7 @@ class App extends Component {
     })
       .then(response => response.json())
       .then(response => {
-        this.setState({ celebrityImage: response.data.items[0].link })
+        this.setState({ celebrityImageURL: response.data.items[0].link, hasMatchResults: true, isFindingMatch: false })
       })
   }
 
@@ -123,7 +126,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLoggedIn, imageURL, route, identifiedImage, celebrityImage } = this.state;
+    const { isLoggedIn, submittedImageURL, route, matchedCelebrityName, celebrityImageURL, isFindingMatch, hasMatchResults } = this.state;
     return (
       <div className="App">
         <Navigation 
@@ -143,10 +146,12 @@ class App extends Component {
                 onURLInputChange={this.onURLInputChange}
                 onButtonSubmit={this.onButtonSubmit}
               />
-            <IdentifyImage 
-              identifiedImage={identifiedImage} 
-              celebrityImage={celebrityImage} 
-              imageURL={imageURL} 
+            <ImageDisplay 
+              matchedCelebrityName={matchedCelebrityName} 
+              celebrityImageURL={celebrityImageURL} 
+              submittedImageURL={submittedImageURL} 
+              isFindingMatch={isFindingMatch}
+              hasMatchResults={hasMatchResults}
             />
             </div>
           : (

@@ -1,0 +1,16 @@
+.image-carousel {
+    object-fit: cover;
+    width: 600px;
+    height: 500px;
+    box-shadow: 4px 4px 8px 0px rgba( 0, 0, 0, 0.2 );
+}
+
+.portrait-crop{
+    height: 500px;
+    width: 500px;
+}
+
+.portrait-crop img{
+    object-fit: cover;
+    object-position: 50% 0%;
+}

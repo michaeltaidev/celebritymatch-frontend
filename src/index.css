@@ -8,9 +8,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: #e52d27;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #b31217, #e52d27);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #b31217, #e52d27); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #40E0D0;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FF0080, #FF8C00, #40E0D0);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FF0080, #FF8C00, #40E0D0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 code {
@@ -32,6 +33,7 @@ main {
 
 h1 {
   font-family: 'Fugaz One', cursive;
+  font-size: 5em;
   color: rgb(233, 233, 233);
 }
 
@@ -46,6 +48,10 @@ h3 {
 input {
   color: rgb(233, 233, 233);
   border-color: rgb(212, 212, 212);
+}
+
+input::placeholder {
+  color: rgba(233, 233, 233, 0.692);
 }
 
 input:focus {

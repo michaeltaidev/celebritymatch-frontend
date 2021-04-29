@@ -3,16 +3,24 @@ import React from 'react';
 const UserInfo = ({ isLoggedIn, username, submittedEntries }) => {
   if (isLoggedIn) {
     return (
-      <div>
-        <div className='f3'>
-          <h3>
+      <div className='mt1'>
+        <div className='f5'>
+          <h2>
             {`Welcome ${username}, you've submitted ${submittedEntries} images.`}
-          </h3>
+          </h2>
         </div>
       </div>
     )
   }
-  return('');
+  return (
+    <div className='mt0'>
+      <div className='f5'>
+        <h2>
+          {`Find your celebrity look-alike.`}
+        </h2>
+      </div>
+    </div>
+  )
 }
 
 export default UserInfo;
