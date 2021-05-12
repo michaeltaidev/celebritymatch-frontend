@@ -12,12 +12,11 @@ const UserInfo = ({ isLoggedIn, username, submittedEntries }) => {
       </div>
     )
   }
+  
   return (
     <div className='mt0'>
       <div className='f5'>
-        <h2>
-          {`Find your celebrity look-alike.`}
-        </h2>
+        <h2 className=''>Find your celebrity look-alike.</h2>
       </div>
     </div>
   )

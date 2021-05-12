@@ -1,4 +1,6 @@
 import React from 'react';
+import './navigation.css'
+import logo from '../../images/logo.png';
 
 const Navigation = ({ changeRoute, isLoggedIn, logout }) => {
     if (isLoggedIn) {
@@ -10,10 +12,9 @@ const Navigation = ({ changeRoute, isLoggedIn, logout }) => {
       )
     } else {
       return (
-        <nav style={{ display: 'flex', justifyContent: 'flex-end' }} className='pt1'>
-          <h1 onClick={() => changeRoute('home')} style={{ left: '50%', transform: 'translateX(-50%)' }} className='mt4 absolute f1 link pointer'>Celebrity Match</h1>
-          <p onClick={() => changeRoute('login')} className='f4 link dim pa3 pointer'>Login</p>
-          <p onClick={() => changeRoute('register')} className='f4 link dim pa3 pointer'>Register</p>
+        <nav className='flex justify-center items-center pt4'>
+          <img src={logo} alt="Logo" className='logo'></img>
+          <h1 onClick={() => changeRoute('home')} className='title pl2 f1 mv0 link pointer'>Celebrity Match</h1>
         </nav>
       );
     }

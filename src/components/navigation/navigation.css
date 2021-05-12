@@ -1,0 +1,15 @@
+.logo {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+@media (max-width: 800px) {
+    .logo {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .title {
+        font-size: 2.5rem !important;
+    }
+}

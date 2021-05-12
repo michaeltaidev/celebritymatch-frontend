@@ -1,16 +1,91 @@
 .image-carousel {
     object-fit: cover;
-    width: 600px;
-    height: 500px;
+    width: 700px;
+    height: 600px;
     box-shadow: 4px 4px 8px 0px rgba( 0, 0, 0, 0.2 );
+}
+
+.share {
+    animation: 1.5s ease 0s normal forwards 1 fadeInDelayed;
+}
+
+.results-container {
+    display: table;
+    animation: 1s ease 0s normal forwards 1 fadeIn;
+}
+
+@media (max-width: 800px) {
+    .results-container {
+        display: inline;
+    }
 }
 
 .portrait-crop{
     height: 500px;
-    width: 500px;
+    width: 400px;
 }
 
 .portrait-crop img{
     object-fit: cover;
     object-position: 50% 0%;
+}
+
+.loading-dots > div{
+    width: 0.4rem;
+    height: 0.4rem;
+    background-color: rgb(233, 233, 233);
+    border-radius: 50%;
+    display: inline-block;
+    animation: 1.4s bounce infinite ease-in-out both;
+    margin: 0 1.5px;
+}
+
+.loading-dots .bounce1 {
+    animation-delay: -0.30s;
+}
+
+.loading-dots .bounce2 {
+    animation-delay: -0.15s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInDelayed {
+    0% {
+        transform: translateY(-25px);
+        opacity: 0;
+    }
+
+    66% {
+        transform: translateY(-25px);
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Given a slight delay to allow images to load first. */
+@keyframes fadeIn {
+    0% {
+        transform: translateY(-25px);
+        opacity: 0;
+    }
+
+    33% {
+        transform: translateY(-25px);
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

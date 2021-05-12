@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+
 import 'react-slideshow-image/dist/styles.css';
 import './image-display.css'
 import { Fade } from 'react-slideshow-image';
@@ -22,12 +23,17 @@ const fadeProperties = {
   defaultIndex: 2
 }
 
-const ImageDisplay = ({ matchedCelebrityName, celebrityImageURL, submittedImageURL, isFindingMatch, hasMatchResults }) => {
+const ImageDisplay = ({ matchedCelebrityName, celebrityImageURL, submittedImageURL, isFindingMatch, hasMatchResults, hasCelebrityMatch, downloadImage }) => {
+  const componentRef = useRef();
+
   if (isFindingMatch) {
     return (
-      <div>
-        <h2>Matching...</h2>
-      </div>
+        <div className="loading-dots pt2">
+          <h2 className="di">Matching</h2>
+          <div className="bounce1"></div>
+          <div className="bounce2"></div>
+          <div className="bounce3"></div>
+        </div>
     );
   }
 
@@ -67,20 +73,30 @@ const ImageDisplay = ({ matchedCelebrityName, celebrityImageURL, submittedImageU
       </Fade>
     );
   } else {
-    return (
-      <div>
-        <h2 className='relative ttc center f3 mb0'>You look like:</h2>
-        <h1 className='relative ttc center f2 mv3'>{matchedCelebrityName}</h1>
-        <div className='flex items-center justify-center w-100'>
-          <div className='portrait-crop shadow-5'>
-            <img id='input-image' className='portrait-crop' src={submittedImageURL} alt='' />
-          </div>
-          <div className='portrait-crop shadow-5'>
-            <img id='input-image' className='portrait-crop' src={celebrityImageURL} alt='' />
+    if (hasCelebrityMatch) {
+      return (
+        <div>
+          <div id='results-container' className='results-container shadow-1 center' ref={componentRef}>
+            <h2 className='relative ttc center f3 mb0'>You look like:</h2>
+            <h1 className='relative ttc center f2 mv3'>{matchedCelebrityName}</h1>
+            <div className='flex items-center justify-center w-100'>
+              <div className='portrait-crop'>
+                <img id='input-image' className='portrait-crop' src={submittedImageURL} alt='' />
+              </div>
+              <div className='portrait-crop'>
+                <img id='input-image' className='portrait-crop' src={celebrityImageURL} alt='' />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div>
+          <h2 className='relative ttc center f3 mb0'>No match found. Try a different image!</h2>
+        </div>
+      );
+    }
   }
 }
 

@@ -18,6 +18,7 @@ const initialState = {
   isLoggedIn: false,
   isFindingMatch: false,
   hasMatchResults: false,
+  hasCelebrityMatch: false,
   user: {
     id: '',
     email: '',
@@ -33,7 +34,25 @@ class App extends Component {
     this.state = initialState;
   }
 
-  onButtonSubmit = () => {
+  onURLInputChange = (event) => {
+    if (this.isInputAnImageLink(event.target.value)) {
+      this.setState({ 
+        input: event.target.value 
+      }, () => {
+        this.findMatch()
+      });
+    }
+  }
+
+  clearInputField = (event) => {
+    event.target.value = "";
+  }
+
+  isInputAnImageLink = (input) => {
+    return (/\.(gif|jpg|jpeg|tiff|png)$/i).test(input)
+  }
+
+  findMatch = () => {
     this.setState({ hasMatchResults: false, isFindingMatch: true })
     this.clearCurrentResults()
     this.fetchClarifaiAPIResults()
@@ -79,7 +98,7 @@ class App extends Component {
       this.setState({ matchedCelebrityName: matchedCelebrityName });
       this.getImageFromGoogleSearchAPI(matchedCelebrityName);
     } catch {
-      this.setState({ matchedCelebrityName: 'No match found. Try a different image!' })
+      this.setState({ isFindingMatch: false, hasMatchResults: true, hasCelebrityMatch: false })
     }
   }
 
@@ -91,12 +110,8 @@ class App extends Component {
     })
       .then(response => response.json())
       .then(response => {
-        this.setState({ celebrityImageURL: response.data.items[0].link, hasMatchResults: true, isFindingMatch: false })
+        this.setState({ celebrityImageURL: response.data.items[0].link, isFindingMatch: false, hasMatchResults: true, hasCelebrityMatch: true })
       })
-  }
-
-  onURLInputChange = (event) => {
-    this.setState({input: event.target.value});
   }
 
   changeRoute = (route) => {
@@ -126,7 +141,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLoggedIn, submittedImageURL, route, matchedCelebrityName, celebrityImageURL, isFindingMatch, hasMatchResults } = this.state;
+    const { isLoggedIn, submittedImageURL, route, matchedCelebrityName, celebrityImageURL, isFindingMatch, hasMatchResults, hasCelebrityMatch } = this.state;
     return (
       <div className="App">
         <Navigation 
@@ -144,7 +159,8 @@ class App extends Component {
               />
               <ImageLinkForm
                 onURLInputChange={this.onURLInputChange}
-                onButtonSubmit={this.onButtonSubmit}
+                clearInputField={this.clearInputField}
+                findMatch={this.findMatch}
               />
             <ImageDisplay 
               matchedCelebrityName={matchedCelebrityName} 
@@ -152,6 +168,8 @@ class App extends Component {
               submittedImageURL={submittedImageURL} 
               isFindingMatch={isFindingMatch}
               hasMatchResults={hasMatchResults}
+              hasCelebrityMatch={hasCelebrityMatch}
+              downloadImage={this.downloadImage}
             />
             </div>
           : (

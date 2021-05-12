@@ -5,6 +5,8 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 
+  color: rgb(233, 233, 233);
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -23,26 +25,9 @@ button {
   cursor: pointer;
 }
 
-p {
-  color: rgb(233, 233, 233);
-}
-
-main {
-  color: rgb(233, 233, 233);
-}
-
 h1 {
   font-family: 'Fugaz One', cursive;
   font-size: 5em;
-  color: rgb(233, 233, 233);
-}
-
-h2 {
-  color: rgb(233, 233, 233);
-}
-
-h3 {
-  color: rgb(233, 233, 233);
 }
 
 input {
@@ -51,7 +36,7 @@ input {
 }
 
 input::placeholder {
-  color: rgba(233, 233, 233, 0.692);
+  color: rgba(233, 233, 233, 0.856);
 }
 
 input:focus {
