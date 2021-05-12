@@ -8,8 +8,8 @@ import ImageLinkForm from './components/image-link-form/image-link-form';
 import UserInfo from './components/user-info/user-info';
 
 import ReactGA from 'react-ga';
-const trackingId = "UA-196923342-1";
-ReactGA.initialize(trackingId);
+ReactGA.initialize("UA-196923342-1");
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 export const CELEBRITYMATCH_API_LINK = 'https://celebritymatch.herokuapp.com/';
 
