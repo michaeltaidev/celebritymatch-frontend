@@ -7,6 +7,10 @@ import Register from './components/register/register';
 import ImageLinkForm from './components/image-link-form/image-link-form';
 import UserInfo from './components/user-info/user-info';
 
+import ReactGA from 'react-ga';
+const trackingId = "UA-196923342-1";
+ReactGA.initialize(trackingId);
+
 export const CELEBRITYMATCH_API_LINK = 'https://celebritymatch.herokuapp.com/';
 
 const initialState = {
